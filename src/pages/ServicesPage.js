@@ -1,9 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { Baby, Scissors, Heart, ShieldCheck, Scan, Stethoscope, ArrowRight } from 'lucide-react';
 
 const ServiceCard = ({ service }) => {
-  const navigate = useNavigate();
 
   return (
     <div className="service-card">
@@ -17,13 +16,10 @@ const ServiceCard = ({ service }) => {
         {service.description}
       </p>
 
-      {/* Redirect button */}
-      <button 
-        className="read-more-btn" 
-        onClick={() => navigate(service.path)}
-      >
+         {/* Link navigation */}
+      <Link to={service.path} className="read-more-btn">
         Read More <ArrowRight size={16} />
-      </button>
+      </Link>
     </div>
   );
 };
