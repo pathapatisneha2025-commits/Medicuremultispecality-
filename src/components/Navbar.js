@@ -1,36 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleLinkClick = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <>
       <nav className="navbar">
         {/* Left: Logo */}
         <div className="navbar-left">
-          <img
-            src="/companylogo.png"
-            alt="Medicure Hospital"
-            className="logo"
-          />
+          <img src="/companylogo.png" alt="Medicure Hospital" className="logo" />
+        </div>
+
+        {/* Hamburger */}
+        <div
+          className={`hamburger ${menuOpen ? "active" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
 
         {/* Center: Links */}
-        <ul className="navbar-center">
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About Us</a></li>
-                    <li><a href="/services">Services</a></li>
-
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/contact">Contact Us</a></li>
+        <ul className={`navbar-center ${menuOpen ? "show" : ""}`}>
+          <li>
+            <Link to="/" onClick={handleLinkClick}>Home</Link>
+          </li>
+          <li>
+            <Link to="/about" onClick={handleLinkClick}>About Us</Link>
+          </li>
+          <li>
+            <Link to="/services" onClick={handleLinkClick}>Services</Link>
+          </li>
+          <li>
+            <Link to="/blog" onClick={handleLinkClick}>Blog</Link>
+          </li>
+          <li>
+            <Link to="/contact" onClick={handleLinkClick}>Contact Us</Link>
+          </li>
         </ul>
 
-        {/* Right: Contact + Button */}
+        {/* Right */}
         <div className="navbar-right">
           <span className="phone">📞 +91 99999 99999</span>
           <button className="appointment-btn">Book Appointment</button>
         </div>
       </nav>
 
-      {/* CSS */}
       <style>{`
         .navbar {
           display: flex;
@@ -39,10 +60,10 @@ const Navbar = () => {
           padding: 14px 40px;
           background: #fff;
           box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-          font-family: Arial, sans-serif;
+          position: relative;
         }
 
-        .navbar-left .logo {
+        .logo {
           height: 55px;
         }
 
@@ -54,24 +75,15 @@ const Navbar = () => {
           padding: 0;
         }
 
-        .navbar-center li a,
-        .navbar-center li span {
+        .navbar-center li a {
           text-decoration: none;
           color: #333;
           font-size: 16px;
           font-weight: 500;
-          cursor: pointer;
         }
 
-        .navbar-center li a:hover,
-        .navbar-center li span:hover {
+        .navbar-center li a:hover {
           color: #e63950;
-        }
-
-        .dropdown span {
-          display: flex;
-          align-items: center;
-          gap: 4px;
         }
 
         .navbar-right {
@@ -83,7 +95,6 @@ const Navbar = () => {
         .phone {
           font-size: 14px;
           color: #444;
-          white-space: nowrap;
         }
 
         .appointment-btn {
@@ -92,18 +103,48 @@ const Navbar = () => {
           border: none;
           padding: 12px 22px;
           border-radius: 22px;
-          font-size: 14px;
-          font-weight: 600;
           cursor: pointer;
         }
 
-        .appointment-btn:hover {
-          background: #d62f45;
+        /* Hamburger */
+        .hamburger {
+          display: none;
+          flex-direction: column;
+          cursor: pointer;
+          gap: 5px;
         }
 
-        /* Responsive */
+        .hamburger span {
+          width: 26px;
+          height: 3px;
+          background: #333;
+          border-radius: 2px;
+        }
+
+        /* Mobile */
         @media (max-width: 900px) {
+          .hamburger {
+            display: flex;
+          }
+
           .navbar-center {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            flex-direction: column;
+            gap: 18px;
+            padding: 20px;
+            display: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+          }
+
+          .navbar-center.show {
+            display: flex;
+          }
+
+          .navbar-right {
             display: none;
           }
         }
