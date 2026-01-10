@@ -1,55 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const BlogPage = () => {
-  const blogPosts = [
-    {
-      category: 'Pregnancy',
-      title: 'Essential Pregnancy Care Tips for First-Time Mothers',
-      excerpt: 'Pregnancy is a beautiful journey, but it can also feel overwhelming for first-time mothers. Here are essential tips to help you navigate this...',
-      date: 'December 20, 2024',
-      readTime: '5 min read'
-    },
-    {
-      category: 'Gynecology',
-      title: 'Understanding PCOS: Symptoms, Causes, and Treatment Options',
-      excerpt: 'Polycystic Ovary Syndrome affects many women, but with proper understanding and care, it can be effectively managed. Learn abou...',
-      date: 'December 15, 2024',
-      readTime: '7 min read'
-    },
-    {
-      category: 'Wellness',
-      title: 'Why Regular Gynecologist Visits Are Essential for Every Woman',
-      excerpt: 'Many women skip routine gynecological check-ups, but these visits are crucial for early detection and prevention of health issues. Her...',
-      date: 'December 10, 2024',
-      readTime: '4 min read'
-    },
-    {
-      category: 'Wellness',
-      title: 'Women\'s Health at Different Ages: A Comprehensive Guide',
-      excerpt: 'Your healthcare needs change as you move through different life stages. From adolescence to menopause, here\'s what to focus on for...',
-      date: 'December 5, 2024',
-      readTime: '8 min read'
-    },
-    {
-      category: 'Gynecology',
-      title: 'Menopause Explained: Embracing This Natural Transition',
-      excerpt: 'Menopause is a natural part of every woman\'s life, but it can come with challenges. Learn how to manage symptoms and embrace this new...',
-      date: 'November 30, 2024',
-      readTime: '6 min read'
-    },
-    {
-      category: 'Fertility',
-      title: 'Fertility Awareness: What Every Couple Should Know',
-      excerpt: 'Planning to start a family? Understanding your fertility can help you on your journey to parenthood. Here are important facts every...',
-      date: 'November 25, 2024',
-      readTime: '5 min read'
-    }
-  ];
+  const [blogPosts, setBlogPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await fetch('https://medicurehospitaldatabase.onrender.com/blogs');
+        const data = await res.json();
+        setBlogPosts(data);
+      } catch (err) {
+        console.error('Failed to fetch blogs:', err);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   return (
     <div style={styles.container}>
-      
-
       {/* --- Blog Hero Section --- */}
       <header style={styles.blogHero}>
         <span style={styles.heroBadge}>HEALTH BLOG</span>
@@ -62,23 +31,27 @@ const BlogPage = () => {
       {/* --- Blog Grid --- */}
       <section style={styles.blogGridSection}>
         <div style={styles.gridContainer}>
-          {blogPosts.map((post, index) => (
-            <div key={index} style={styles.blogCard}>
+          {blogPosts.map((post) => (
+            <div key={post.id} style={styles.blogCard}>
               <div style={styles.imagePlaceholder}>
-                <div style={styles.iconOverlay}>📖</div>
+                {post.image ? (
+                  <img src={post.image} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={styles.iconOverlay}>📖</div>
+                )}
               </div>
               <div style={styles.cardContent}>
                 <span style={styles.categoryBadge}>{post.category}</span>
                 <h3 style={styles.cardTitle}>{post.title}</h3>
-                <p style={styles.cardExcerpt}>{post.excerpt}</p>
+                <p style={styles.cardExcerpt}>{post.description}</p>
                 <div style={styles.cardFooter}>
                   <div style={styles.metaInfo}>
-                    <span>📅 {post.date}</span>
-                    <span>🕒 {post.readTime}</span>
+                    <span>📅 {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                    <span>🕒 {post.read_time || post.readTime}</span>
                   </div>
                   <div style={styles.authorSection}>
-                     <span style={styles.authorName}>👤 Dr. Medicure Team</span>
-                     <button style={styles.readMoreBtn}>Read More →</button>
+                    <span style={styles.authorName}>👤 {post.author}</span>
+                    <button style={styles.readMoreBtn}>Read More →</button>
                   </div>
                 </div>
               </div>
@@ -96,11 +69,11 @@ const BlogPage = () => {
           <button style={styles.subscribeBtn}>Subscribe</button>
         </div>
       </section>
-
-      
     </div>
   );
 };
+
+
 
 const styles = {
   container: { fontFamily: "'Inter', sans-serif", color: '#2D3748', backgroundColor: '#fff' },

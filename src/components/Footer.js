@@ -12,8 +12,12 @@ const Footer = () => {
         <div style={styles.footerContainer}>
           {/* Column 1: About */}
           <div style={styles.footerCol}>
-            <div style={styles.footerLogoPlaceholder}></div>
-            <p style={styles.footerAboutText}>
+ {/* Logo Image Placeholder */}
+            <img
+              src="/companylogo.png"
+              alt="Medicure Logo"
+              style={styles.footerLogo}
+            />            <p style={styles.footerAboutText}>
               Providing compassionate women's healthcare with warmth, expertise, and a personal touch. We care, we cure.
             </p>
             <p style={{ ...styles.tagline, color: '#DE4A5B', fontSize: '14px' }}>❤️ We Care, We Cure</p>
