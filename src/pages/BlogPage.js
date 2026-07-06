@@ -6,7 +6,7 @@ const BlogPage = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch('https://medicurehospitaldatabase.onrender.com/blogs');
+        const res = await fetch('https://medicurehospitaldatabase-zcc0.onrender.com/blogs/');
         const data = await res.json();
         setBlogPosts(data);
       } catch (err) {
